@@ -61,6 +61,9 @@ export default {
   				ring: 'hsl(var(--sidebar-ring))'
   			}
   		},
+		  fontFamily: {
+			Qwitcher: ['Qwitcher Grypen', 'cursive']
+		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
