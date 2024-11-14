@@ -1,88 +1,35 @@
 "use client";
 
 import React from "react";
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarMenuToggle,
-  NavbarMenuItem,
-  NavbarMenu,
-  NavbarContent,
-  NavbarItem,
-  Link,
-  Button,
-} from "@nextui-org/react";
 import Image from "next/image";
 
-export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+const Header: React.FC = () => {
+    return (
+      <div className="w-full h-20 lg:h-28 border-b-[1px] border-gray-500 text-black lg:text-white bg-white lg:bg-transparent">
+            <div className="max-w-screen-2xl h-full mx-auto px-4 flex items-center justify-between">
+                <Image 
+                    src="/werent-logo.svg"
+                    width={150}
+                    height={50}
+                    alt="WeRent Logo"
+                    priority
+                />
+                <ul className="hidden lg:inline-flex items-center gap-8 uppercase text-sm font-semibold">
+                    {["Home", "About", "Product"].map((item) => (
+                        <li key={item} className="navbarLi cursor-pointer hover:text-gray-300">
+                            {item}
+                        </li>
+                    ))}
+                </ul>
 
-  const menuItems = ["Home", "About", "Products"];
+                <div className="hidden lg:inline-flex gap-8 items-center">
+                    <button className="w-48 h-14 bg-white text-lime-950 uppercase text-sm font-semibold rounded-md hover:bg-darkRed hover:text-lime-900 duration-300">
+                        Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
 
-  return (
-    <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
-      {/* Mobile menu toggle */}
-      <NavbarContent className="sm:hidden" justify="start">
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        />
-      </NavbarContent>
-
-      {/* Centered brand for mobile */}
-      <NavbarContent className="sm:hidden pr-3" justify="center">
-        <NavbarBrand>
-          <Image
-            src="/werent-logo.svg"
-            width={120}
-            height={40}
-            alt="WeRent Logo"
-            priority
-          />
-        </NavbarBrand>
-      </NavbarContent>
-
-      {/* Navbar content for larger screens */}
-      <NavbarContent className="hidden sm:flex gap-6" justify="center">
-        <NavbarBrand>
-          <Image
-            src="/werent-logo.svg"
-            width={120}
-            height={40}
-            alt="WeRent Logo"
-            priority
-          />
-        </NavbarBrand>
-        {menuItems.map((item) => (
-          <NavbarItem key={item}>
-            <Link href={`#${item.toLowerCase()}`}>{item}</Link>
-          </NavbarItem>
-        ))}
-      </NavbarContent>
-
-      {/* Right side content: Login button */}
-      <NavbarContent justify="end">
-        <NavbarItem>
-          <Button as={Link} color="warning" href="/login" variant="flat">
-            Login
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
-
-      {/* Mobile dropdown menu */}
-      <NavbarMenu>
-        {menuItems.map((item) => (
-          <NavbarMenuItem key={item}>
-            <Link className="w-full" color="foreground" href={`#${item.toLowerCase()}`} size="lg">
-              {item}
-            </Link>
-          </NavbarMenuItem>
-        ))}
-        <NavbarMenuItem>
-          <Link className="w-full" color="warning" href="/login" size="lg">
-            Login
-          </Link>
-        </NavbarMenuItem>
-      </NavbarMenu>
-    </Navbar>
-  );
-}
+export default Header;
