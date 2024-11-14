@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import axios from "axios";
+import { CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -9,6 +10,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useRouter } from "next/router";
+import StarRating from "./customrate";
 
 interface Product {
   id: number;
@@ -21,11 +23,19 @@ interface Product {
   passed: string;
   fit: string;
   dimensions: Dimensions;
+  review: Review[];
 }
+
 interface Dimensions {
   size: number;
   waist: number;
   length: number;
+}
+interface Review {
+  user_name: string;
+  comment: string;
+  rating: string;
+  created_at: string;
 }
 
 export default function DetailProduct() {
@@ -33,24 +43,25 @@ export default function DetailProduct() {
   const { id } = router.query;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  const openModal = () => setIsModalOpen(true);
+  const openModal = (index: number) => {
+    setCurrentImageIndex(index);
+    setIsModalOpen(true);
+  };
+
   const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     async function fetchAllProduct() {
       if (!id) return;
       try {
-        const prodRes = await fetch(`/api/products/${id}`);
-        if (!prodRes.ok) {
-          throw new Error("Failed to fetch product");
-        }
-        const prodData = await prodRes.json();
-        setProducts(prodData.products);
+        const prodRes = await axios.get(`/api/products/${id}`);
+        setProducts(prodRes.data.products);
       } catch (error) {
         console.error("Error Fetch Products:", error);
         setError("Error loading products");
@@ -92,15 +103,21 @@ export default function DetailProduct() {
   }
 
   const product = products[0];
+  const reorderedImages = [
+    ...product.images.slice(currentImageIndex),
+    ...product.images.slice(0, currentImageIndex),
+  ];
+
+  
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 justify-center gap-10 p-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 justify-center gap-10 p-10 max-w-7xl mx-auto">
         <div className="mx-auto lg:max-w-lg">
           <Carousel className="w-full max-w-lg">
             <CarouselContent>
               {product.images.map((img, index) => (
-                <CarouselItem key={index} onClick={openModal}>
+                <CarouselItem key={index} onClick={() => openModal(index)}>
                   <CardContent className="flex aspect-square items-center justify-center">
                     <img
                       src={img}
@@ -115,17 +132,17 @@ export default function DetailProduct() {
             <CarouselNext className="absolute right-0 top-1/2 transform -translate-y-1/2 mr-2" />
           </Carousel>
         </div>
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 justify-center gap-10 p-10">
+        <div className="flex flex-col justify-center">
           <div className="flex flex-col font-sans">
             <div className="divide-y">
               <h1 className="text-sm md:text-lg lg:text-3xl mb-4 font-bold">
                 {product.title}
               </h1>
-              <div className="pt-5 flex justify-between">
-                <div className=" grid">
+              <div className="pt-5 flex justify-between items-center">
+                <div className="grid">
                   <p className="text-xs md:text-sm lg:text-base">Rent Fee</p>
                   <h2 className="text-sm md:text-base lg:text-lg">
-                    RP. {product.price} / Days
+                    RP. {product.price.toLocaleString()} / Days
                   </h2>
                 </div>
                 <button className="text-sm md:text-base lg:text-lg px-10 bg-yellow-500 rounded">
@@ -133,18 +150,18 @@ export default function DetailProduct() {
                 </button>
               </div>
             </div>
-            <div className="text-xs md:text-base lg:text-lg grid">
-              <div className="py-4 flex justify-between">
+            <div className="text-xs md:text-base lg:text-lg grid gap-4 mt-4">
+              <div className="flex justify-between items-center">
                 <p className="font-bold">DESIGNERS</p>
                 <p>VIEW THE COLLECTION</p>
               </div>
-              <p
+              <div
                 className="bg-cover bg-center py-2 px-4 mb-4 w-full h-[5rem] p-3 font-Qwitcher"
                 style={{ backgroundImage: `url(${product.image_designer})` }}
               >
                 {product.designer_name}
-              </p>
-              <div className="border-t-2 border-black"></div>
+              </div>
+              <div className="border-t-2 border-black mt-4"></div>
               <table className="table-auto w-full">
                 <thead>
                   <tr>
@@ -197,10 +214,39 @@ export default function DetailProduct() {
             </div>
           </div>
         </div>
+
+        <div className="mt-8">
+          <h2 className="text-lg font-bold mb-4">Customer Reviews</h2>
+          {product.review && product.review.length > 0 ? (
+            <ul className="space-y-4">
+              {product.review.map((r, index) => (
+                <li
+                  key={index}
+                  className="border border-gray-300 p-4 rounded-md"
+                >
+                  <p className="text-sm font-semibold">{r.user_name}</p>
+                  <p className="text-sm text-yellow-500">
+                      <StarRating rating={parseFloat(r.rating)} />
+                    </p>
+                  
+                  <p className="text-sm text-gray-600">{r.created_at}</p>
+                  <p className="text-sm text-gray-600">{r.comment}</p>
+                  <p className="text-sm text-yellow-500">
+                    
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500">
+              No reviews available for this product.
+            </p>
+          )}
+        </div>
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-65 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-65 hidden lg:flex items-center justify-center z-50">
           <div
             ref={modalRef}
             className="relative lg:max-w-lg p-3"
@@ -208,9 +254,8 @@ export default function DetailProduct() {
           >
             <Carousel className="w-full justify-center">
               <CarouselContent>
-                {product.images.map((img, index) => (
-                  <CarouselItem key={index} onClick={openModal}>
-                    {/* <Card> */}
+                {reorderedImages.map((img, index) => (
+                  <CarouselItem key={index}>
                     <CardContent className="flex aspect-square items-center justify-center">
                       <img
                         src={img}
@@ -218,12 +263,11 @@ export default function DetailProduct() {
                         className="object-cover cursor-pointer w-[25rem] h-[35rem] p-3"
                       />
                     </CardContent>
-                    {/* </Card> */}
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
+              <CarouselPrevious className="absolute left-0 top-1/2 transform -translate-y-1/2 ml-2" />
+              <CarouselNext className="absolute right-0 top-1/2 transform -translate-y-1/2 mr-2" />
             </Carousel>
           </div>
         </div>
