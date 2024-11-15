@@ -4,11 +4,28 @@ const SignIn: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (event: React.FormEvent) => {
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        // Handle sign-in logic here
-        console.log('Email:', email);
-        console.log('Password:', password);
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Login successful:', data);
+                // Redirect or update UI as needed
+            } else {
+                console.error('Login failed');
+                // Handle login failure (e.g., show error message)
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
+            // Handle error (e.g., show error message)
+        }
     };
 
     return (
