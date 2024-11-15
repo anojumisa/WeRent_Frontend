@@ -62,6 +62,9 @@ export default {
   				ring: 'hsl(var(--sidebar-ring))'
   			}
   		},
+        backgroundImage: {
+        'banner': "url('/werent-banner.jpg')",
+      },
 		  fontFamily: {
 			Qwitcher: ['Qwitcher Grypen', 'cursive']
 		},
