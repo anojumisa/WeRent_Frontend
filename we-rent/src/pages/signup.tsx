@@ -20,6 +20,23 @@ const SignUp: React.FC = () => {
     event.preventDefault();
     try {
       await validationSchema.validate({ name, email, password, address, phone }, { abortEarly: false });
+
+      // Check if email is already in use
+      const response = await fetch("/api/check-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (data.exists) {
+        alert("Email is already in use. Please use a different email.");
+        return;
+      }
+
       // Handle form submission logic here
       console.log("Name:", name);
       console.log("Email:", email);
@@ -27,6 +44,7 @@ const SignUp: React.FC = () => {
       console.log("Address:", address);
       console.log("Phone:", phone);
       alert("Thank you for signing up!");
+
       // Reset fields after alert
       setName("");
       setEmail("");
