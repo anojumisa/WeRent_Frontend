@@ -39,7 +39,7 @@ const StarRating: React.FC<StarRatingProps> = ({ rating, onClick }) => {
           return (
             <FaRegStar
               key={index}
-              className="text-yellow-500 cursor-pointer"
+              className="text-gray-400 cursor-pointer"
               onClick={() => handleClick(index)}
             />
           );
