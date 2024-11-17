@@ -72,18 +72,18 @@ export default function DetailProduct() {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 justify-center gap-10 p-0 lg:p-10 max-w-7xl mx-auto text-black pb-20 ">
-        <div className="mx-auto lg:max-w-lg w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 justify-center gap-10 p-0 lg:p-10 max-w-7xl mx-auto text-black bg-white ">
+        <div className="relative mx-auto lg:max-w-lg w-full bg-white">
           <button
             onClick={() => router.push("/product")}
-            className="lg:hidden px-4 py-2 text-lg font-bold items-center"
+            className="sticky top-0 w-full bg-white px-8 py-4 text-lg font-bold text-left z-20 lg:hidden"
           >
             ❮
           </button>
           <img
             src={product.images}
             alt={product.title}
-            className="object-cover w-full h-[35rem] cursor-pointer"
+            className="object-cover w-full h-[35rem]"
           />
         </div>
         <div className="flex flex-col justify-center px-8 lg:p-0">
@@ -178,8 +178,8 @@ export default function DetailProduct() {
               </table>
             </div>
           </div>
-        </div>
-        <div className="fixed lg:hidden bottom-0 left-0 right-0 bg-white border-t border-gray-300 z-10 pt-2 pb-4 flex justify-between items-center px-8 py-4 shadow-lg">
+          </div>
+        <div className="sticky relative border border-b-0 inset-x-0 top-0 bottom-0 h-16 lg:hidden left-0 right-0 bg-white  z-10 py-10 px-8 flex justify-between items-center">
           <div className="grid">
             <p className="text-xs md:text-sm">Rent Fee</p>
             <h2 className="text-base md:text-lg font-bold">
@@ -191,6 +191,7 @@ export default function DetailProduct() {
           </button>
         </div>
       </div>
+     
     </>
   );
 }
