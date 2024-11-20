@@ -44,9 +44,9 @@ const ReviewHeader: React.FC<ReviewProps> = ({
 	return (
 		<div className="p-4 ">
 			<div className="flex justify-between items-center border-b pb-4">
-				<button className="flex items-center rotate-90">
+				{/* <button className="flex items-center rotate-90">
 					<img src="/arrow.svg" alt="previous button" className="w-5"/>
-				</button>
+				</button> */}
 				<h3 className="text-center text-lg font-semibold text-black flex-1">
 					Reviews ({reviewCount})
 				</h3>
