@@ -217,9 +217,9 @@ export default function DetailProduct() {
             </div>
           </div>
         </div>
-        <ReviewHeader />
+        <ReviewHeader comment={""} date={""} helpfulCount={0} />
         <FilterBar />
-        <ReviewBody />
+        <ReviewBody rating={0} date={""} helpfulCount={0} />
 
         {/* <div className="mt-8">
           <h2 className="text-lg font-bold mb-4">Customer Reviews</h2>
