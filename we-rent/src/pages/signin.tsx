@@ -38,7 +38,7 @@ const SignIn: React.FC = () => {
                         <input
                             type="email"
                             id="email"
-                            className="form-control w-full px-3 py-2 border rounded"
+                            className="form-control w-full px-3 py-2 border rounded text-gray-700"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
@@ -49,13 +49,13 @@ const SignIn: React.FC = () => {
                         <input
                             type="password"
                             id="password"
-                            className="form-control w-full px-3 py-2 border rounded"
+                            className="form-control w-full px-3 py-2 border rounded text-gray-700"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>
-                    <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Sign In</button>
+                    <button type="submit" className="w-full bg-teal-600 text-white py-2 rounded hover:bg-blue-600">Sign In</button>
                 </form>
             </div>
         </div>

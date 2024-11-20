@@ -13,7 +13,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({
 }) => (
 	<button
 		onClick={onClick}
-		className={`px-10 py-2  font-medium ${
+		className={`xl:px-2 md:px-3 sm:px-2 sm:text-xs md:text-xl xl:text-2xl py-3 ${
 			isActive ? "bg-[#CDAA44] text-white" : "bg-[#D9D9D9] text-black"
 		}`}
 	>

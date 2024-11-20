@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/carousel";
 import { useRouter } from "next/router";
 import StarRating from "./customrate";
+import ReviewHeader from "@/components/review_section/header";
+import FilterBar from "@/components/review_section/filter";
+import ReviewBody from "@/components/review_section/review_body";
 
 interface Product {
   id: number;
@@ -112,7 +115,7 @@ export default function DetailProduct() {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 justify-center gap-10 p-10 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-2 justify-center gap-10 p-10 max-w-7xl mx-auto mt-10">
         <div className="mx-auto lg:max-w-lg">
           <Carousel className="w-full max-w-lg">
             <CarouselContent>
@@ -135,10 +138,10 @@ export default function DetailProduct() {
         <div className="flex flex-col justify-center">
           <div className="flex flex-col font-sans">
             <div className="divide-y">
-              <h1 className="text-sm md:text-lg lg:text-3xl mb-4 font-bold">
+              <h1 className="text-sm md:text-lg lg:text-3xl mb-4 font-bold text-black">
                 {product.title}
               </h1>
-              <div className="pt-5 flex justify-between items-center">
+              <div className="pt-5 flex justify-between items-center text-black">
                 <div className="grid">
                   <p className="text-xs md:text-sm lg:text-base">Rent Fee</p>
                   <h2 className="text-sm md:text-base lg:text-lg">
@@ -150,7 +153,7 @@ export default function DetailProduct() {
                 </button>
               </div>
             </div>
-            <div className="text-xs md:text-base lg:text-lg grid gap-4 mt-4">
+            <div className="text-xs md:text-base lg:text-lg grid gap-4 mt-4 text-black">
               <div className="flex justify-between items-center">
                 <p className="font-bold">DESIGNERS</p>
                 <p>VIEW THE COLLECTION</p>
@@ -182,8 +185,8 @@ export default function DetailProduct() {
                 </tbody>
               </table>
             </div>
-            <div className="pt-4 px-5 text-sm md:text-base lg:text-lg">
-              <table className="table-auto w-full border border-gray-800">
+            <div className="pt-4 px-5 text-sm md:text-base lg:text-lg text-black">
+              <table className="table-auto w-full border  border-gray-800">
                 <thead>
                   <tr>
                     <th className="border-b border-gray-800 px-4 py-2 text-center">
@@ -214,8 +217,11 @@ export default function DetailProduct() {
             </div>
           </div>
         </div>
+        <ReviewHeader />
+        <FilterBar />
+        <ReviewBody />
 
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <h2 className="text-lg font-bold mb-4">Customer Reviews</h2>
           {product.review && product.review.length > 0 ? (
             <ul className="space-y-4">
@@ -242,11 +248,11 @@ export default function DetailProduct() {
               No reviews available for this product.
             </p>
           )}
-        </div>
+        </div> */}
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-65 hidden lg:flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-opacity-65 hidden lg:flex items-center justify-center z-50">
           <div
             ref={modalRef}
             className="relative lg:max-w-lg p-3"
