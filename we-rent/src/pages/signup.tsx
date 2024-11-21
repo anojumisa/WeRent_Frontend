@@ -6,14 +6,14 @@ const SignUp: React.FC = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone_number, setPhone] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const validationSchema = yup.object().shape({
     username: yup.string().required("Username is required"),
     email: yup.string().email("Invalid email format").required("Email is required"),
     password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
-    phone: yup.string().matches(/^\d+$/, "Phone must be a valid number").required("Phone is required"),
+    phone_number: yup.string().matches(/^\d+$/, "Phone must be a valid number").required("Phone is required"),
   });
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -22,10 +22,10 @@ const SignUp: React.FC = () => {
 
     try {
       // Validate input fields
-      await validationSchema.validate({ username, email, password, phone }, { abortEarly: false });
+      await validationSchema.validate({ username, email, password, phone_number }, { abortEarly: false });
 
       // Call registerUser API
-      const response = await registerUser({ email, password });
+      const response = await registerUser({ username, email, password, phone_number });
       alert("Registration successful! Please log in.");
 
       // Clear form fields on success
@@ -33,13 +33,16 @@ const SignUp: React.FC = () => {
       setEmail("");
       setPassword("");
       setPhone("");
+      console.log(response);
     } catch (errors) {
       if (errors instanceof yup.ValidationError) {
         // Display the first validation error
         setErrorMessage(errors.errors[0]);
+        console.log(errors.errors[0]);
       } else {
         // Handle API error
         setErrorMessage("Registration failed. Please try again later.");
+        console.log("API Error:", errors);
       }
     }
   };
@@ -73,12 +76,12 @@ const SignUp: React.FC = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="phone" className="block text-black">Phone:</label>
+            <label htmlFor="phone number" className="block text-black">Phone:</label>
             <input
               type="tel"
               id="phone"
               className="form-control w-full px-3 py-2 border rounded text-black"
-              value={phone}
+              value={phone_number}
               onChange={(e) => setPhone(e.target.value)}
               required
             />

@@ -81,7 +81,7 @@ export default function ProductPage() {
   return (
     <>
       <div className="p-10">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-black mt-14">
           {currentProducts.map((item) => (
             <div
               key={item.id}
@@ -134,7 +134,7 @@ export default function ProductPage() {
                 href="#"
                 onClick={() => handlePageChange(pageNumber + 1)}
                 className={
-                  currentPage === pageNumber + 1 ? "bg-blue-500 text-white" : ""
+                  currentPage === pageNumber + 1 ? "bg-teal-500 text-white" : ""
                 }
               >
                 {pageNumber + 1}

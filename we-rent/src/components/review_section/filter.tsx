@@ -10,7 +10,7 @@ const FilterBar: React.FC = () => {
 	};
 
 	return (
-		<div className="flex justify-between space-x-2 p-4">
+		<div className="flex justify-between space-x-2 p-4 xl:space-x-4 xl:p-6 md:space-x-3 sm:space-x-2 ">
 			<FilterButton
 				label="All Reviews"
 				isActive={activeFilter === "All Reviews"}

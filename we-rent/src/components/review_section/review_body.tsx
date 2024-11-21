@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { mockProducts } from "@/pages/api/products/[id]"; 
 
 interface ReviewProps {
 	user?: {

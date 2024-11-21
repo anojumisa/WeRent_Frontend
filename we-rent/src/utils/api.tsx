@@ -42,8 +42,10 @@ export const refreshToken = async (data: { refresh_token: string }) => {
 
 /** Register user */
 export const registerUser = async (data: {
+	username: string;
 	email: string;
 	password: string;
+	phone_number: string;
 }) => {
 	const response = await api.post(ENDPOINTS.REGISTER, data);
 	return response.data;
@@ -69,6 +71,8 @@ export const editUserPassword = async (data: {
 	const response = await api.put(ENDPOINTS.EDIT_USER_PASSWORD, data);
 	return response.data;
 };
+
+
 
 // Default export for the axios instance
 export default api;
