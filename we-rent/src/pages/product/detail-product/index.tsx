@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import StarRating from "./customrate";
+import ReviewHeader from "@/components/review_section/header";
+import FilterBar from "@/components/review_section/filter";
+import ReviewBody from "@/components/review_section/review_body";
 
 interface Product {
   id: number;
@@ -24,12 +27,33 @@ interface Dimensions {
   size: string;
   bust: number;
   length: number;
+	id: number;
+	title: string;
+	image_designer: string;
+	designer_name: string;
+	rating: number;
+	images: string[];
+	price: number;
+	passed: string;
+	fit: string;
+	dimensions: Dimensions;
+	review: Review[];
 }
+
 interface Review {
-  user_name: string;
-  comment: string;
-  rating: string;
-  created_at: string;
+	user_avatar: string;
+	user_name: string;
+	comment: string;
+	rating: string;
+	created_at: string;
+	user_height: number;
+	user_weight: number;
+	user_bust: number;
+	user_waist: number;
+	user_hip: number;
+	user_rating: number;
+	user_helpful: number;
+	user_unhelpful: number;
 }
 
 export default function DetailProduct() {
@@ -39,35 +63,34 @@ export default function DetailProduct() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchAllProduct() {
-      if (!id) return;
-      try {
-        const prodRes = await axios.get(`/api/products/${id}`);
-        setProducts(prodRes.data.products);
-      } catch (error) {
-        console.error("Error Fetch Products:", error);
-        setError("Error loading products");
-      } finally {
-        setLoading(false);
-      }
-    }
+	useEffect(() => {
+		async function fetchAllProduct() {
+			if (!id) return;
+			try {
+				const prodRes = await axios.get(`/api/products/${id}`);
+				setProducts(prodRes.data.products);
+			} catch (error) {
+				console.error("Error Fetch Products:", error);
+				setError("Error loading products");
+			} finally {
+				setLoading(false);
+			}
+		}
 
-    fetchAllProduct();
-  }, [id]);
+		fetchAllProduct();
+	}, [id]);
 
   if (loading) {
     return <div>LOADING.....</div>;
   }
 
-  if (error) {
-    return <main>{error}</main>;
-  }
+	if (error) {
+		return <main>{error}</main>;
+	}
 
-  if (!products || products.length === 0) {
-    return <main>No product data available.</main>;
-  }
-
+	if (!products || products.length === 0) {
+		return <main>No product data available.</main>;
+	}
   const product = products[0];
 
   return (
@@ -191,7 +214,83 @@ export default function DetailProduct() {
           </button>
         </div>
       </div>
-     
-    </>
-  );
+				<div className="review col-span-2 mb-0">
+					<ReviewHeader comment={""} date={""} helpfulCount={0} />
+					<FilterBar />
+					
+				</div>
+
+				<div className="mt-8 col-span-2 space-y-12">
+					{product.review && product.review.length > 0 ? (
+						<ul className="space-y-4">
+							{product.review.map((r, index) => (
+								<li
+									key={index}
+									className="border border-gray-300 p-4 rounded-md flex "
+								>
+									<img
+										src={r.user_avatar}
+										alt=""
+										className="w-12 h-12 rounded-full"
+									/>
+									<div className="ml-4 space-y-2">
+										<p className="text-sm text-black font-semibold">
+											{r.user_name}
+										</p>
+										<p className="text-sm text-yellow-500">
+											<StarRating rating={parseFloat(r.rating)} />
+										</p>
+										<p className="text-xs text-gray-500">
+											{r.user_height} cm {r.user_weight} kg {r.user_bust} cm/
+											{r.user_waist} cm/{r.user_hip} cm
+										</p>
+										<p className="text-sm text-gray-600">{r.comment}</p>
+										<p className="text-xs text-gray-400">{r.created_at}</p>
+										<p className="text-sm text-yellow-500"></p>
+									</div>
+									<button
+										className="text-sm text-gray-600 hover:text-gray-800 flex gap-2 pl-2 ml-auto mr-4"
+									>
+										<img src="/thumb_up.svg" alt="" /> ({r.user_helpful})
+									</button>
+								</li>
+							))}
+						</ul>
+					) : (
+						<p className="text-gray-500">
+							No reviews available for this product.
+						</p>
+					)}
+				</div>
+			</div>
+
+			{isModalOpen && (
+				<div className="fixed inset-0 bg-opacity-65 hidden lg:flex items-center justify-center z-50">
+					<div
+						ref={modalRef}
+						className="relative lg:max-w-lg p-3"
+						style={{ width: "90vw", maxWidth: "31.25rem" }}
+					>
+						<Carousel className="w-full justify-center">
+							<CarouselContent>
+								{reorderedImages.map((img, index) => (
+									<CarouselItem key={index}>
+										<CardContent className="flex aspect-square items-center justify-center">
+											<img
+												src={img}
+												alt={img}
+												className="object-cover cursor-pointer w-[25rem] h-[35rem] p-3"
+											/>
+										</CardContent>
+									</CarouselItem>
+								))}
+							</CarouselContent>
+							<CarouselPrevious className="absolute left-0 top-1/2 transform -translate-y-1/2 ml-2" />
+							<CarouselNext className="absolute right-0 top-1/2 transform -translate-y-1/2 mr-2" />
+						</Carousel>
+					</div>
+				</div>
+			)}
+		</>
+	);
 }
