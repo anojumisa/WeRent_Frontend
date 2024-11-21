@@ -42,8 +42,10 @@ export const refreshToken = async (data: { refresh_token: string }) => {
 
 /** Register user */
 export const registerUser = async (data: {
+	username: string;
 	email: string;
 	password: string;
+	phone_number: string;
 }) => {
 	const response = await api.post(ENDPOINTS.REGISTER, data);
 	return response.data;
