@@ -72,5 +72,7 @@ export const editUserPassword = async (data: {
 	return response.data;
 };
 
+
+
 // Default export for the axios instance
 export default api;

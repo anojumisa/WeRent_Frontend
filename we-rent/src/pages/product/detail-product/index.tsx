@@ -35,10 +35,19 @@ interface Dimensions {
 	length: number;
 }
 interface Review {
+	user_avatar: string;
 	user_name: string;
 	comment: string;
 	rating: string;
 	created_at: string;
+	user_height: number;
+	user_weight: number;
+	user_bust: number;
+	user_waist: number;
+	user_hip: number;
+	user_rating: number;
+	user_helpful: number;
+	user_unhelpful: number;
 }
 
 export default function DetailProduct() {
@@ -110,6 +119,7 @@ export default function DetailProduct() {
 		...product.images.slice(currentImageIndex),
 		...product.images.slice(0, currentImageIndex),
 	];
+	
 
 	return (
 		<>
@@ -215,40 +225,55 @@ export default function DetailProduct() {
 						</div>
 					</div>
 				</div>
-				<div>
+
+				<div className="review col-span-2 mb-0">
 					<ReviewHeader comment={""} date={""} helpfulCount={0} />
 					<FilterBar />
-					<ReviewBody rating={0} date={""} helpfulCount={0} />
+					
 				</div>
 
-				{/* <div className="mt-8">
-          <h2 className="text-lg font-bold mb-4">Customer Reviews</h2>
-          {product.review && product.review.length > 0 ? (
-            <ul className="space-y-4">
-              {product.review.map((r, index) => (
-                <li
-                  key={index}
-                  className="border border-gray-300 p-4 rounded-md"
-                >
-                  <p className="text-sm font-semibold">{r.user_name}</p>
-                  <p className="text-sm text-yellow-500">
-                      <StarRating rating={parseFloat(r.rating)} />
-                    </p>
-                  
-                  <p className="text-sm text-gray-600">{r.created_at}</p>
-                  <p className="text-sm text-gray-600">{r.comment}</p>
-                  <p className="text-sm text-yellow-500">
-                    
-                  </p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500">
-              No reviews available for this product.
-            </p>
-          )}
-        </div> */}
+				<div className="mt-8 col-span-2 space-y-12">
+					{product.review && product.review.length > 0 ? (
+						<ul className="space-y-4">
+							{product.review.map((r, index) => (
+								<li
+									key={index}
+									className="border border-gray-300 p-4 rounded-md flex "
+								>
+									<img
+										src={r.user_avatar}
+										alt=""
+										className="w-12 h-12 rounded-full"
+									/>
+									<div className="ml-4 space-y-2">
+										<p className="text-sm text-black font-semibold">
+											{r.user_name}
+										</p>
+										<p className="text-sm text-yellow-500">
+											<StarRating rating={parseFloat(r.rating)} />
+										</p>
+										<p className="text-xs text-gray-500">
+											{r.user_height} cm {r.user_weight} kg {r.user_bust} cm/
+											{r.user_waist} cm/{r.user_hip} cm
+										</p>
+										<p className="text-sm text-gray-600">{r.comment}</p>
+										<p className="text-xs text-gray-400">{r.created_at}</p>
+										<p className="text-sm text-yellow-500"></p>
+									</div>
+									<button
+										className="text-sm text-gray-600 hover:text-gray-800 flex gap-2 pl-2 ml-auto mr-4"
+									>
+										<img src="/thumb_up.svg" alt="" /> ({r.user_helpful})
+									</button>
+								</li>
+							))}
+						</ul>
+					) : (
+						<p className="text-gray-500">
+							No reviews available for this product.
+						</p>
+					)}
+				</div>
 			</div>
 
 			{isModalOpen && (

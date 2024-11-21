@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 
 interface ReviewProps {
 	reviewCount?: number;
@@ -23,7 +24,7 @@ interface ReviewProps {
 	helpfulCount: number;
 }
 
-const ReviewHeader: React.FC<ReviewProps> = ({
+const ReviewPageHeader: React.FC<ReviewProps> = ({
 	reviewCount = 5,
 	rating = 3.8,
 	sizeRatings = { small: 60, trueToSize: 90, large: 13 },
@@ -41,16 +42,21 @@ const ReviewHeader: React.FC<ReviewProps> = ({
 	date,
 	helpfulCount,
 }) => {
+	const router = useRouter(); // Use Next.js router
+
 	return (
-		<div className="p-4 ">
+		<div className="p-4">
 			<div className="flex justify-between items-center border-b pb-4">
-				{/* <button className="flex items-center rotate-90">
-					<img src="/arrow.svg" alt="previous button" className="w-5"/>
-				</button> */}
-				<h3 className="text-left text-lg font-semibold text-black flex-1">
+				{/* Updated Previous Button */}
+				<button
+					className="flex items-center rotate-90"
+					onClick={() => router.back()} // Navigate to the previous page
+				>
+					<img src="/arrow.svg" alt="previous button" className="w-5" />
+				</button>
+				<h3 className="text-center text-lg font-semibold text-black flex-1">
 					Reviews ({reviewCount})
 				</h3>
-				<a href="/reviews" className="text-sm text-green-700 font-bold underline ">View more</a>
 			</div>
 			<div className="flex items-center gap-2 my-2">
 				<span className="text-black text-xl font-bold">{rating}</span>
@@ -110,4 +116,4 @@ const ReviewHeader: React.FC<ReviewProps> = ({
 	);
 };
 
-export default ReviewHeader;
+export default ReviewPageHeader;
