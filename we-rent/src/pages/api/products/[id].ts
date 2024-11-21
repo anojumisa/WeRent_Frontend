@@ -5,12 +5,11 @@ const mockProducts = [
     id: 1,
     title: "WEDDING DRESS ZALORA",
     image_designer: "https://images.pexels.com/photos/4556683/pexels-photo-4556683.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    designer_name:"Nadila airini",
-    images: ["https://images.pexels.com/photos/1545590/pexels-photo-1545590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1","https://images.pexels.com/photos/157757/wedding-dresses-fashion-character-bride-157757.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1","https://images.pexels.com/photos/291738/pexels-photo-291738.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", "https://images.pexels.com/photos/291759/pexels-photo-291759.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"],
-    price: 5000000,
-    passed:"5UK",
-    fit:"turn on size",
-    dimensions: { size: 30, waist: 40, length: 10 },
+    designer_name: "Nadila airini",
+    images: "https://images.pexels.com/photos/1545590/pexels-photo-1545590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    fabric: "SILK",
+    fit: "TRUE TO SIZE",
+    dimensions: { size: "M", bust: 50, length: 15 },
     review: [
         {
           user_avatar: "https://images.pexels.com/photos/1545590/pexels-photo-1545590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -478,11 +477,8 @@ const mockProducts = [
     image_designer: "https://images.pexels.com/photos/4556683/pexels-photo-4556683.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     designer_name:"Nadila airini",
     average_rating: 4.5,
-    images: ["https://images.pexels.com/photos/1545590/pexels-photo-1545590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1","https://images.pexels.com/photos/157757/wedding-dresses-fashion-character-bride-157757.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1","https://images.pexels.com/photos/291738/pexels-photo-291738.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", "https://images.pexels.com/photos/291759/pexels-photo-291759.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"],
-    price: 5000000,
-    passed:"5UK",
-    fit:"turn on size",
-    dimensions: { size: 30, waist: 40, length: 10 },
+    average_review: 5,
+    total_review: 3,
     review: [
       {
         user_avatar: "https://images.pexels.com/photos/1545590/pexels-photo-1545590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -1715,9 +1711,8 @@ const mockProducts = [
     id: 30,
     title: "BLAZZER ZARA",
     image_designer: "https://images.pexels.com/photos/7716946/pexels-photo-7716946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    designer_name:"bobi santoso",
-    avarage_rating: 4.0,
-    images: ["https://images.pexels.com/photos/3765550/pexels-photo-3765550.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1","https://images.pexels.com/photos/1375736/pexels-photo-1375736.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"],
+    designer_name: "bobi santoso",
+    images: "https://images.pexels.com/photos/3765550/pexels-photo-3765550.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     price: 750000,
     passed:"5UK",
     fit:"turn on size",
@@ -1888,13 +1883,12 @@ const mockProducts = [
       }
     ]
   },
-  
+  // Produk lain diubah dengan cara yang sama
 ];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
 
- 
   const product = mockProducts.find(p => p.id === Number(id));
 
   if (!product) {
