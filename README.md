@@ -98,13 +98,25 @@ Navigate to ```http://localhost:3000```.
 ## Key features of the application
 
 ### Landing Page
+![Landing Page](/we-rent/public/documentation/landing%20page.png)
 
 ### Product Page
+![Products Page](/we-rent/public/documentation/product%20page.png)
 
 ### Product Detail Page
 ![Product Detail](/we-rent/public/documentation/product%20detail%20page.png)
 
-### Review Page
+### Filter Review by Reviewer Media 
+![Filter by Media](/we-rent/public/documentation/filter%20by%20media.png)
+
+### Filter Review by Newest Review
+![Filter by Newest Review](/we-rent/public/documentation/filter%20by%20newest%20media.png)
+
+### Filter Review by Rating
+![Filter by Review Rating](/we-rent/public/documentation/filter%20by%20rating.png)
+
+### Reviewer Image Pop Up when Click
+![Filter by Image Pop Up](/we-rent/public/documentation/image%20pop%20up.png)
 
 
 ## Contributors
@@ -112,7 +124,3 @@ Navigate to ```http://localhost:3000```.
 2. Ardy 
 3. Frisqia
 4. Leonard
-
-
-## 
-git
