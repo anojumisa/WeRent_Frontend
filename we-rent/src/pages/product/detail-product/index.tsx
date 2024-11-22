@@ -41,7 +41,7 @@ interface Review {
 	user_hip: number;
 	user_helpful: number;
 	user_unhelpful: number;
-	media: string[];
+	media: string;
 }
 
 interface ImageModalProps {
@@ -299,7 +299,7 @@ export default function DetailProduct() {
 				<div className="grid">
 					<p className="text-xs md:text-sm">Rent Fee</p>
 					<h2 className="text-base md:text-lg font-bold">
-						Rp {product.price.toLocaleString("id-ID")}/ Day
+						Rp {product?.price.toLocaleString("id-ID")}/ Day
 					</h2>
 				</div>
 				<button className="text-xs md:text-sm px-4 py-2 bg-yellow-500 rounded">
@@ -333,9 +333,9 @@ export default function DetailProduct() {
 							<p>{review.comment}</p>
 							<div className="w-24">
 								<img
-									src={review.media[0]}
+									src={review.media}
 									alt=""
-									onClick={() => handleImageClick(review.media[0])}
+									onClick={() => handleImageClick(review.media)}
 									className="cursor-pointer"
 								/>
 							</div>
