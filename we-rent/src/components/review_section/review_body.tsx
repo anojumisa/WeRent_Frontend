@@ -35,7 +35,7 @@ const ReviewBody: React.FC<ReviewProps> = ({
 
 	// Toggle function for "Read more" / "Read less"
 	const handleToggleReadMore = () => {
-		setIsExpanded(!isExpanded);
+		setIsExpanded((prev) => !prev);
 	};
 
 	// Show full comment if expanded, otherwise show truncated
@@ -72,11 +72,11 @@ const ReviewBody: React.FC<ReviewProps> = ({
 					{/* Comment */}
 					<p className="text-gray-800 mb-2">
 						{displayedComment}
-						{showReadMore && (
+						{comment.length > 150 && (
 							<a
 								href="#"
 								onClick={(e) => {
-									e.preventDefault(); // Prevent page jump
+									e.preventDefault();
 									handleToggleReadMore();
 								}}
 								className="text-green-600 ml-1"
