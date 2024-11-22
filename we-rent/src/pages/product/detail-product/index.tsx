@@ -44,11 +44,21 @@ interface Review {
 	media: string[];
 }
 
-const ImageModal = ({ isOpen, imageSrc, onClose }) => {
+interface ImageModalProps {
+	isOpen: boolean;
+	imageSrc: string;
+	onClose: () => void;
+}
+
+const ImageModal: React.FC<ImageModalProps> = ({
+	isOpen,
+	imageSrc,
+	onClose,
+}) => {
 	if (!isOpen) return null;
 
-	const handleClickOutside = (e) => {
-		if (e.target.id === "modal-overlay") {
+	const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+		if ((e.target as HTMLElement).id === "modal-overlay") {
 			onClose();
 		}
 	};
@@ -316,15 +326,16 @@ export default function DetailProduct() {
 							<h4 className="font-semibold">{review.user_name}</h4>
 							<StarRating rating={parseFloat(review.rating)} />
 							<p className="text-sm text-gray-500">
-								{review.user_height} cm, {review.user_weight} kg, {review.user_bust} cm/
-                {review.user_waist} cm/{review.user_hip} cm
+								{review.user_height} cm, {review.user_weight} kg,{" "}
+								{review.user_bust} cm/
+								{review.user_waist} cm/{review.user_hip} cm
 							</p>
 							<p>{review.comment}</p>
 							<div className="w-24">
 								<img
-									src={review.media}
+									src={review.media[0]}
 									alt=""
-									onClick={() => handleImageClick(review.media)}
+									onClick={() => handleImageClick(review.media[0])}
 									className="cursor-pointer"
 								/>
 							</div>
