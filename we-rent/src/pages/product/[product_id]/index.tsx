@@ -1,48 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
 import StarRating from "./customrate";
 import ReviewHeader from "@/components/review_section/header";
 import FilterBar from "@/components/review_section/filter";
-
-interface Product {
-	id: number;
-	title: string;
-	image_designer: string;
-	designer_name: string;
-	rating: number;
-	images: string;
-	price: number;
-	fabric: string;
-	fit: string;
-	dimensions: Dimensions;
-	review: Review[];
-	total_review: number;
-	average_rating: number;
-}
-
-interface Dimensions {
-	size: string;
-	bust: number;
-	length: number;
-}
-
-interface Review {
-	user_avatar: string;
-	user_name: string;
-	comment: string;
-	rating: string;
-	created_at: string;
-	user_height: number;
-	user_weight: number;
-	user_bust: number;
-	user_waist: number;
-	user_hip: number;
-	user_helpful: number;
-	user_unhelpful: number;
-	media: string;
-}
+import { Product, Review } from "@/pages/api/products/[id]";
+import { faker } from '@faker-js/faker';
+import { NextPageContext } from "next";
 
 interface ImageModalProps {
 	isOpen: boolean;
@@ -86,18 +51,20 @@ const ImageModal: React.FC<ImageModalProps> = ({
 	);
 };
 
-export default function DetailProduct() {
+interface Props {
+	productId: string
+}
+
+const DetailProduct = (props: Props) => {
 	const router = useRouter();
-	const { id } = router.query;
+	const id = props.productId;
 
 	// States
-	const [products, setProducts] = useState<Product[]>([]);
+	const [product, setProduct] = useState<Product | null>(null);
 	const [error, setError] = useState<string | null>(null);
-	const [loading, setLoading] = useState(true);
-
 	const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
 	const [filterType, setFilterType] = useState<string>("All Reviews");
-
+	const [loading, setLoading] = useState(true);
 	const [currentPage, setCurrentPage] = useState(1);
 	const reviewsPerPage = 5;
 
@@ -105,15 +72,26 @@ export default function DetailProduct() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedImage, setSelectedImage] = useState("");
 
+	const generateRandomImage = () => {
+		const src = faker.image.urlPicsumPhotos({ height: 400, width: 400 })
+		return (
+			<img
+				src={src}
+				alt=""
+				onClick={() => handleImageClick(src)}
+				className="cursor-pointer"
+		/>
+		);
+	}
+
 	// Fetch Product Data
 	useEffect(() => {
 		async function fetchProduct() {
 			if (!id) return;
 			try {
-				const prodRes = await axios.get(`/api/products/${id}`);
-				const productData = prodRes.data.products[0];
-				setProducts(prodRes.data.products);
-				setFilteredReviews(productData.review); // Initialize with all reviews
+				const resp: AxiosResponse<Product> = await axios.get(`/api/products/${id}`);
+				setProduct(resp.data);
+				setFilteredReviews(resp.data.reviews); // Initialize with all reviews
 			} catch (error) {
 				console.error("Error Fetching Product:", error);
 				setError("Error loading product.");
@@ -127,24 +105,22 @@ export default function DetailProduct() {
 	// Filter Change Handler
 	const handleFilterChange = (filter: string) => {
 		setFilterType(filter);
-		const product = products[0];
 		if (!product) return;
-
-		let filtered = product.review;
+		let filtered = product.reviews;
 
 		if (filter === "Photos/Videos") {
-			filtered = product.review.filter((r) => r.media && r.media.length > 0);
+			filtered = product.reviews; // Not available yet
 		} else if (filter === "Newest Reviews") {
-			filtered = [...product.review].sort(
+			filtered = [...product.reviews].sort(
 				(a, b) =>
 					new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
 			);
 		} else if (filter === "Rating") {
-			filtered = product.review.filter((r) => parseFloat(r.rating) >= 4);
+			filtered = product.reviews.filter((r) => r.rating >= 4);
 		} else if (filter.includes("Stars")) {
 			const rating = parseInt(filter.split(" ")[0]);
-			filtered = product.review.filter(
-				(r) => Math.round(parseFloat(r.rating)) === rating
+			filtered = product.reviews.filter(
+				(r) => Math.round(r.rating) === rating
 			);
 		}
 
@@ -153,14 +129,13 @@ export default function DetailProduct() {
 	};
 
 	// Pagination logic
-	const totalReviews = filteredReviews.length;
 	const indexOfLastReview = currentPage * reviewsPerPage;
 	const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-	const currentReviews = filteredReviews.slice(
+	const currentReviews = filteredReviews?.slice(
 		indexOfFirstReview,
 		indexOfLastReview
-	);
-	const totalPages = Math.ceil(totalReviews / reviewsPerPage);
+	) || [];
+	const totalPages = Math.ceil((product?.reviews.length || 0) / reviewsPerPage);
 
 	const handlePageChange = (page: number) => {
 		if (page > 0 && page <= totalPages) setCurrentPage(page);
@@ -187,11 +162,9 @@ export default function DetailProduct() {
 	}
 
 	// No Product Data
-	if (!products || products.length === 0) {
+	if (!product || !product?.variant_options?.length) {
 		return <main>No product data available.</main>;
 	}
-
-	const product = products[0];
 
 	return (
 		<>
@@ -205,8 +178,8 @@ export default function DetailProduct() {
 						❮
 					</button>
 					<img
-						src={product.images}
-						alt={product.title}
+						src={product.variant_options[0].variant_medias[0].url}
+						alt={product.variant_options[0].variant_name}
 						className="object-cover w-full h-[35rem]"
 					/>
 				</div>
@@ -215,7 +188,7 @@ export default function DetailProduct() {
 					<div className="flex flex-col font-sans">
 						<div className="grid px-2">
 							<h1 className="text-2xl font-bold text-gray-800 mb-2 font-sans">
-								{product.title}
+								{product.name}
 							</h1>
 							<div className="flex items-center">
 								<StarRating rating={product.average_rating} />
@@ -226,7 +199,7 @@ export default function DetailProduct() {
 						</div>
 						{/* Additional Info */}
 						<div className="pt-4 border-b-2 border-black flex justify-between text-xs">
-							<p>{product.dimensions.size}</p>
+							<p>{product.variant_options[0].variant_name}</p>
 							<p>VIEW SIZE GUIDE</p>
 						</div>
 
@@ -236,9 +209,9 @@ export default function DetailProduct() {
 						</div>
 						<div
 							className="bg-cover bg-center mb-4 w-full h-[5rem] font-Qwitcher text-2xl flex items-center"
-							style={{ backgroundImage: `url(${product.image_designer})` }}
+							style={{ backgroundImage: `url(${product.store.image_url})` }}
 						>
-							<span className="pl-4">{product.designer_name}</span>
+							<span className="pl-4">{product.store.name}</span>
 						</div>
 						<div className="border-t-2 border-black mt-0"></div>
 						<table className="table-auto w-full">
@@ -281,13 +254,13 @@ export default function DetailProduct() {
 							<tbody>
 								<tr>
 									<td className="border-b border-gray-800 px-4 py-2 text-center">
-										{product.dimensions.size}
+										{product.variant_options[0].variant_name}
 									</td>
 									<td className="border-b border-gray-800 px-4 py-2 text-center">
-										{product.dimensions.bust} cm
+										{product.variant_options[0].bust} cm
 									</td>
 									<td className="border-b border-gray-800 px-4 py-2 text-center">
-										{product.dimensions.length} cm
+										{product.variant_options[0].length} cm
 									</td>
 								</tr>
 							</tbody>
@@ -318,33 +291,27 @@ export default function DetailProduct() {
 				{currentReviews.map((review, index) => (
 					<div key={index} className="border p-4 rounded-md flex">
 						<img
-							src={review.user_avatar}
-							alt={review.user_name}
+							src={review.user.image_url || faker.image.urlLoremFlickr({
+								height: 200,
+								width: 200
+							})}
+							alt={review.user.username}
 							className="w-12 h-12 rounded-full"
 						/>
 						<div className="ml-4 place-items-start">
-							<h4 className="font-semibold">{review.user_name}</h4>
-							<StarRating rating={parseFloat(review.rating)} />
+							<h4 className="font-semibold">{review.user.username}</h4>
+							<StarRating rating={review.rating} />
 							<p className="text-sm text-gray-500">
-								{review.user_height} cm, {review.user_weight} kg,{" "}
-								{review.user_bust} cm/
-								{review.user_waist} cm/{review.user_hip} cm
+								188 cm, 68 kg, 20 cm/58 cm/70 cm
 							</p>
 							<p>{review.comment}</p>
-							<div className="w-24">
-								<img
-									src={review.media}
-									alt=""
-									onClick={() => handleImageClick(review.media)}
-									className="cursor-pointer"
-								/>
-							</div>
+							{generateRandomImage()}
 
 							<p className="text-xs text-gray-400">{review.created_at}</p>
 						</div>
 						<div className="flex justify-end ml-auto">
 							<button className="text-sm text-gray-600 hover:text-gray-800 flex gap-2 pl-2 ml-auto mr-4">
-								<img src="/thumb_up.svg" alt="" /> ({review.user_helpful})
+								<img src="/thumb_up.svg" alt="" /> ({review.like_count})
 							</button>
 						</div>
 					</div>
@@ -379,3 +346,15 @@ export default function DetailProduct() {
 		</>
 	);
 }
+
+export async function getServerSideProps(ctx: NextPageContext) {
+  const { product_id } = ctx.query
+
+  return {
+    props: {
+      productId: product_id
+    },
+  }
+}
+
+export default DetailProduct;

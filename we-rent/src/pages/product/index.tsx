@@ -9,17 +9,12 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
-interface Product {
-  id: number;
-  title: string;
-  average_rating: number;
-  thumbnail: string;
-  price: number;
-}
+import { FaSpinner } from "react-icons/fa";
+import { ProductResp } from "../api/products";
+import { faker } from '@faker-js/faker';
 
 export default function ProductPage() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductResp[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -28,8 +23,8 @@ export default function ProductPage() {
   const [productsPerPage] = useState(5); 
   const [rowsPerPage] = useState(5); 
 
-  const handleProductClick = (id: number) => {
-    router.push(`/product/detail-product?id=${id}`);
+  const handleProductClick = (id: string) => {
+    router.push(`/product/${id}`);
   };
 
   useEffect(() => {
@@ -37,8 +32,8 @@ export default function ProductPage() {
       try {
         const response = await axios.get("/api/products");
 
-        if (Array.isArray(response.data.products)) {
-          setProducts(response.data.products);
+        if (Array.isArray(response.data)) {
+          setProducts(response.data);
         } else {
           throw new Error("Invalid product data");
         }
@@ -54,7 +49,7 @@ export default function ProductPage() {
   }, []);
 
   if (loading) {
-    return <div>LOADING.....</div>;
+    return <FaSpinner />;
   }
 
   if (error) {
@@ -89,20 +84,26 @@ export default function ProductPage() {
               className="relative bg-white shadow-md rounded-lg overflow-hidden transition-transform duration-500 hover:scale-105"
             >
               <img
-                src={item.thumbnail}
-                alt={item.title}
+                src={item.image_url}
+                alt={faker.image.urlPicsumPhotos({ height: 200, width: 200 })}
                 className="w-full h-56 object-cover"
               />
               <div className="p-4">
                 <h2 className="text-lg font-semibold mb-2 truncate">
-                  {item.title}
+                  {item.name}
                 </h2>
                 <p className="text-base font-bold mb-2">
-                  Rp. {item.price.toLocaleString()}/Day
+                  {new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                  }).format(item.price)}/Day
                 </p>
                 <div className="flex items-center">
                   <span className="text-yellow-500">⭐</span>
-                  <p className="ml-1 text-sm">{item.average_rating}</p>
+                  <p className="ml-1 text-sm">{new Intl.NumberFormat('en-US', {
+                    style: 'decimal',
+                    notation: 'compact'
+                  }).format(item.average_rating)}</p>
                 </div>
               </div>
               <div className="absolute inset-0 bg-black bg-opacity-50 text-white flex items-center justify-center text-lg font-semibold opacity-0 hover:opacity-100 transition-opacity">

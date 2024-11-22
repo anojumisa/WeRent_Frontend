@@ -33,16 +33,13 @@ const SignUp: React.FC = () => {
       setEmail("");
       setPassword("");
       setPhone("");
-      console.log(response);
     } catch (errors) {
       if (errors instanceof yup.ValidationError) {
         // Display the first validation error
         setErrorMessage(errors.errors[0]);
-        console.log(errors.errors[0]);
       } else {
         // Handle API error
         setErrorMessage("Registration failed. Please try again later.");
-        console.log("API Error:", errors);
       }
     }
   };

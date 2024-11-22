@@ -14,8 +14,6 @@ const SignIn: React.FC = () => {
             // Use the `loginUser` function to call the API
             const data = await loginUser({ email, password });
 
-            console.log('Login successful:', data);
-
             // Save token or user data to localStorage/sessionStorage
             localStorage.setItem('accessToken', data.accessToken);
 

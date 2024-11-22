@@ -72,7 +72,20 @@ export const editUserPassword = async (data: {
 	return response.data;
 };
 
+export const getProductById = async (id: string) => {
+	const response = await api.get(`/api/v1/products/${id}`)
+	return response.data;
+}
 
+export const getReviewByProductId = async (id: string) => {
+	const response = await api.get(`/api/v1/products/${id}/reviews`);
+	return response.data;
+}
+
+export const getAllProducts = async () => {
+	const response = await api.get(`/api/v1/products`);
+	return response.data;
+}
 
 // Default export for the axios instance
 export default api;
