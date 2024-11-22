@@ -95,7 +95,7 @@ export default function DetailProduct() {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 justify-center gap-10 p-0 lg:p-10 max-w-7xl mx-auto text-black bg-white ">
+      <div className="grid grid-cols-1 lg:grid-cols-2 justify-center gap-10 p-0 lg:p-10 max-w-7xl mx-auto text-black bg-white mt-20 ">
         <div className="relative mx-auto lg:max-w-lg w-full bg-white">
           <button
             onClick={() => router.push("/product")}
@@ -202,7 +202,7 @@ export default function DetailProduct() {
             </div>
           </div>
           </div>
-        <div className="sticky relative border border-b-0 inset-x-0 top-0 bottom-0 h-16 lg:hidden left-0 right-0 bg-white  z-10 py-10 px-8 flex justify-between items-center">
+        <div className="relative border border-b-0 inset-x-0 top-0 bottom-0 h-16 lg:hidden left-0 right-0 bg-white  z-10 py-10 px-8 flex justify-between items-center">
           <div className="grid">
             <p className="text-xs md:text-sm">Rent Fee</p>
             <h2 className="text-base md:text-lg font-bold">
@@ -262,35 +262,6 @@ export default function DetailProduct() {
 						</p>
 					)}
 				</div>
-			</div>
-
-			{isModalOpen && (
-				<div className="fixed inset-0 bg-opacity-65 hidden lg:flex items-center justify-center z-50">
-					<div
-						ref={modalRef}
-						className="relative lg:max-w-lg p-3"
-						style={{ width: "90vw", maxWidth: "31.25rem" }}
-					>
-						<Carousel className="w-full justify-center">
-							<CarouselContent>
-								{reorderedImages.map((img, index) => (
-									<CarouselItem key={index}>
-										<CardContent className="flex aspect-square items-center justify-center">
-											<img
-												src={img}
-												alt={img}
-												className="object-cover cursor-pointer w-[25rem] h-[35rem] p-3"
-											/>
-										</CardContent>
-									</CarouselItem>
-								))}
-							</CarouselContent>
-							<CarouselPrevious className="absolute left-0 top-1/2 transform -translate-y-1/2 ml-2" />
-							<CarouselNext className="absolute right-0 top-1/2 transform -translate-y-1/2 mr-2" />
-						</Carousel>
-					</div>
-				</div>
-			)}
 		</>
 	);
 }
