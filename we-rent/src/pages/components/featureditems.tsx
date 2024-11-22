@@ -52,7 +52,7 @@ export default function ProductPage() {
   }
 
   return (
-    <div className="p-10">
+    <div className="p-4">
       <h2 className="text-2xl font-bold text-white">Our Daily Digest</h2>
       <div className="flex gap-8 overflow-x-auto text-black mt-14">
         {products.map((item) => (

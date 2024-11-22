@@ -63,6 +63,7 @@ export default {
         },
       },
       fontFamily: {
+        Montserrat: ['Montserrat', 'sans-serif'],
         Qwitcher: ["Qwitcher Grypen", "cursive"],
         sans: ['"Helvetica Neue"', "Arial", "sans-serif"],
         serif: ['"Playfair Display"', "serif"],
