@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { mockProducts } from "@/pages/api/products/[id]"; 
 
 interface ReviewProps {
 	user?: {
@@ -35,7 +34,7 @@ const ReviewBody: React.FC<ReviewProps> = ({
 
 	// Toggle function for "Read more" / "Read less"
 	const handleToggleReadMore = () => {
-		setIsExpanded((prev) => !prev);
+		setIsExpanded(!isExpanded);
 	};
 
 	// Show full comment if expanded, otherwise show truncated
@@ -72,11 +71,11 @@ const ReviewBody: React.FC<ReviewProps> = ({
 					{/* Comment */}
 					<p className="text-gray-800 mb-2">
 						{displayedComment}
-						{comment.length > 150 && (
+						{showReadMore && (
 							<a
 								href="#"
 								onClick={(e) => {
-									e.preventDefault();
+									e.preventDefault(); // Prevent page jump
 									handleToggleReadMore();
 								}}
 								className="text-green-600 ml-1"

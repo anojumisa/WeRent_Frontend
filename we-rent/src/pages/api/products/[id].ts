@@ -149,7 +149,7 @@ const mockProducts = [
           user_unhelpful: 2,
         },
         {
-          user_avatar: "https://images.pexels.com/photos/1554487/pexels-photo-1554487.jpeg",
+          user_avatar: "https://images.pexels.com/photos/1554487/pexels-photo-155448.jpeg",
           user_name: "Noah",
           comment: "Good quality shirt and pants. They were well-pressed and smelled fresh. Great service!",
           rating: "4",
@@ -296,7 +296,7 @@ const mockProducts = [
     price: 750000,
     passed:"5UK",
     fit:"turn on size",
-    dimensions: { size: 20, waist: 50, length: 15 },
+    dimensions: { size: 'M', waist: 50, length: 15 },
     review: [
       {
         user_avatar: "https://images.pexels.com/photos/1545590/pexels-photo-1545590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -580,7 +580,7 @@ const mockProducts = [
     price: 3050000,
     passed:"5UK",
     fit:"turn on size",
-    dimensions: { size: 20, waist: 50, length: 15 },
+    dimensions: { size: 'M', waist: 50, length: 15 },
     review: [
       {
         user_avatar: "https://images.pexels.com/photos/1545590/pexels-photo-1545590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -723,7 +723,7 @@ const mockProducts = [
         user_unhelpful: 2,
       },
       {
-        user_avatar: "https://images.pexels.com/photos/1554487/pexels-photo-1554487.jpeg",
+        user_avatar: "https://images.pexels.com/photos/1703310/pexels-photo-1703310.jpeg",
         user_name: "Noah",
         comment: "Good quality shirt and pants. They were well-pressed and smelled fresh. Great service!",
         rating: "4",
@@ -869,7 +869,7 @@ const mockProducts = [
     price: 670000,
     passed:"5UK",
     fit:"turn on size",
-    dimensions: { size: 20, waist: 50, length: 15 },
+    dimensions: { size: 'M', waist: 50, length: 15 },
     review: [
       {
         user_avatar: "https://images.pexels.com/photos/1545590/pexels-photo-1545590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -1153,7 +1153,7 @@ const mockProducts = [
     price: 5000000,
     passed:"5UK",
     fit:"turn on size",
-    dimensions: { size: 30, waist: 40, length: 10 },
+    dimensions: { size: 'M', waist: 40, length: 10 },
     review: [
       {
         user_avatar: "https://images.pexels.com/photos/1545590/pexels-photo-1545590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -1721,7 +1721,7 @@ const mockProducts = [
     price: 3050000,
     passed:"5UK",
     fit:"turn on size",
-    dimensions: { size: 20, waist: 50, length: 15 },
+    dimensions: { size: 'M', waist: 50, length: 15 },
     review: [
       {
         user_avatar: "https://images.pexels.com/photos/1545590/pexels-photo-1545590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
