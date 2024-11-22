@@ -1,70 +1,89 @@
-"use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 
-interface FeaturedProduct {
+interface Product {
   id: number;
   title: string;
-  image: string;
+  average_rating: number;
+  thumbnail: string;
   price: number;
 }
 
-const FeaturedItems: React.FC = () => {
-  const [featuredProducts, setFeaturedProducts] = useState<FeaturedProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function ProductPage() {
+  const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  const maxProductsToShow = 10; // Limit to 10 products.
+
+  const handleProductClick = (id: number) => {
+    router.push(`/product/detail-product?id=${id}`);
+  };
 
   useEffect(() => {
-    const fetchFeaturedProducts = async () => {
+    const fetchAllProducts = async () => {
       try {
-        const response = await axios.get("/api/featured-products");
-        setFeaturedProducts(response.data);
-      } catch (err) {
-        console.error("Error fetching featured products:", err);
-        setError("Unable to load featured products.");
+        const response = await axios.get("/api/products");
+
+        if (Array.isArray(response.data.products)) {
+          setProducts(response.data.products.slice(0, maxProductsToShow)); // Show only the first 10 products.
+        } else {
+          throw new Error("Invalid product data");
+        }
+      } catch (error) {
+        console.error("Error Fetch Products:", error);
+        setError("Error loading products");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchFeaturedProducts();
+    fetchAllProducts();
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>LOADING.....</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (featuredProducts.length === 0) {
-    return <div>No featured products available.</div>;
+    return <main>{error}</main>;
   }
 
   return (
-    <div className="featured-products-container p-5">
-      <h2 className="text-xl font-bold mb-4">Featured Products</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {featuredProducts.map((product) => (
+    <div className="p-10">
+      <h2 className="text-2xl font-bold text-white">Our Daily Digest</h2>
+      <div className="flex gap-8 overflow-x-auto text-black mt-14">
+        {products.map((item) => (
           <div
-            key={product.id}
-            className="featured-product-card border border-gray-300 rounded-lg shadow hover:shadow-lg transition p-4"
+            key={item.id}
+            onClick={() => handleProductClick(item.id)}
+            className="min-w-[200px] max-w-[250px] bg-white shadow-md rounded-lg overflow-hidden transition-transform duration-500 hover:scale-105"
           >
             <img
-              src={product.image}
-              alt={product.title}
-              className="object-cover w-full h-40 rounded-md"
+              src={item.thumbnail}
+              alt={item.title}
+              className="w-full h-40 object-cover"
             />
-            <div className="mt-3">
-              <h3 className="text-sm font-semibold">{product.title}</h3>
-              <p className="text-sm text-gray-500">Rp. {product.price.toLocaleString()}</p>
+            <div className="p-4">
+              <h2 className="text-lg font-semibold mb-2 truncate">
+                {item.title}
+              </h2>
+              <p className="text-base font-bold mb-2">
+                Rp. {item.price.toLocaleString()}/Day
+              </p>
+              <div className="flex items-center">
+                <span className="text-yellow-500">⭐</span>
+                <p className="ml-1 text-sm">{item.average_rating}</p>
+              </div>
+            </div>
+            <div className="absolute inset-0 bg-black bg-opacity-50 text-white flex items-center justify-center text-lg font-semibold opacity-0 hover:opacity-100 transition-opacity">
+              Check Details
             </div>
           </div>
         ))}
       </div>
     </div>
   );
-};
-
-export default FeaturedItems;
+}
