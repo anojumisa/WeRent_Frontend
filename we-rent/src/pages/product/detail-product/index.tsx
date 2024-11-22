@@ -214,13 +214,13 @@ export default function DetailProduct() {
           </button>
         </div>
       </div>
-				<div className="review col-span-2 mb-0">
+				<div className="review col-span-2 mb-0 p-10">
 					<ReviewHeader comment={""} date={""} helpfulCount={0} />
 					<FilterBar />
 					
 				</div>
 
-				<div className="mt-8 col-span-2 space-y-12">
+				<div className="mt-8 col-span-2 space-y-12 p-10">
 					{product.review && product.review.length > 0 ? (
 						<ul className="space-y-4">
 							{product.review.map((r, index) => (
