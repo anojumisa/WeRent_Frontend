@@ -13,7 +13,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({
 }) => (
 	<button
 		onClick={onClick}
-		className={`xl:px-4 md:px-3 sm:px-2 sm:text-sm px-4 py-1 ${
+		className={`px-4 py-1 w-4/12 h-10 flex items-center justify-center sm:flex-col md:flex-row ${
 			isActive ? "bg-[#CDAA44] text-white" : "bg-[#D9D9D9] text-black"
 		}`}
 	>

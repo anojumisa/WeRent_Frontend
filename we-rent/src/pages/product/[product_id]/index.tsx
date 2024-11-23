@@ -6,7 +6,7 @@ import StarRating from "./customrate";
 import ReviewHeader from "@/components/review_section/header";
 import FilterBar from "@/components/review_section/filter";
 import { Product, Review } from "@/pages/api/products/[id]";
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker";
 import { NextPageContext } from "next";
 
 interface ImageModalProps {
@@ -52,7 +52,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
 };
 
 interface Props {
-	productId: string
+	productId: string;
 }
 
 const DetailProduct = (props: Props) => {
@@ -73,23 +73,25 @@ const DetailProduct = (props: Props) => {
 	const [selectedImage, setSelectedImage] = useState("");
 
 	const generateRandomImage = () => {
-		const src = faker.image.urlPicsumPhotos({ height: 400, width: 400 })
+		const src = faker.image.urlPicsumPhotos({ height: 400, width: 400 });
 		return (
 			<img
 				src={src}
 				alt=""
 				onClick={() => handleImageClick(src)}
-				className="cursor-pointer"
-		/>
+				className="cursor-pointer w-24"
+			/>
 		);
-	}
+	};
 
 	// Fetch Product Data
 	useEffect(() => {
 		async function fetchProduct() {
 			if (!id) return;
 			try {
-				const resp: AxiosResponse<Product> = await axios.get(`/api/products/${id}`);
+				const resp: AxiosResponse<Product> = await axios.get(
+					`/api/products/${id}`
+				);
 				setProduct(resp.data);
 				setFilteredReviews(resp.data.reviews); // Initialize with all reviews
 			} catch (error) {
@@ -119,9 +121,7 @@ const DetailProduct = (props: Props) => {
 			filtered = product.reviews.filter((r) => r.rating >= 4);
 		} else if (filter.includes("Stars")) {
 			const rating = parseInt(filter.split(" ")[0]);
-			filtered = product.reviews.filter(
-				(r) => Math.round(r.rating) === rating
-			);
+			filtered = product.reviews.filter((r) => Math.round(r.rating) === rating);
 		}
 
 		setFilteredReviews(filtered);
@@ -131,10 +131,8 @@ const DetailProduct = (props: Props) => {
 	// Pagination logic
 	const indexOfLastReview = currentPage * reviewsPerPage;
 	const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-	const currentReviews = filteredReviews?.slice(
-		indexOfFirstReview,
-		indexOfLastReview
-	) || [];
+	const currentReviews =
+		filteredReviews?.slice(indexOfFirstReview, indexOfLastReview) || [];
 	const totalPages = Math.ceil((product?.reviews.length || 0) / reviewsPerPage);
 
 	const handlePageChange = (page: number) => {
@@ -281,20 +279,24 @@ const DetailProduct = (props: Props) => {
 			</div>
 
 			{/* Reviews Section */}
-			<div className="review col-span-2 mb-0 p-10">
+			<div className="review col-span-2 mb-0 p-10 mx-auto lg:max-w-7xl w-full">
 				<ReviewHeader comment="" date="" helpfulCount={0} />
 				<FilterBar onFilterChange={handleFilterChange} />
 			</div>
 
 			{/* Filtered Reviews */}
-			<div className="mt-8 col-span-2 space-y-6 p-10 text-black">
+			<div className=" col-span-2 space-y-8 p-10 text-black mx-auto lg:max-w-7xl w-full">
 				{currentReviews.map((review, index) => (
+					
 					<div key={index} className="border p-4 rounded-md flex">
 						<img
-							src={review.user.image_url || faker.image.urlLoremFlickr({
-								height: 200,
-								width: 200
-							})}
+							src={
+								review.user.image_url ||
+								faker.image.urlLoremFlickr({
+									height: 200,
+									width: 200,
+								})
+							}
 							alt={review.user.username}
 							className="w-12 h-12 rounded-full"
 						/>
@@ -306,7 +308,6 @@ const DetailProduct = (props: Props) => {
 							</p>
 							<p>{review.comment}</p>
 							{generateRandomImage()}
-
 							<p className="text-xs text-gray-400">{review.created_at}</p>
 						</div>
 						<div className="flex justify-end ml-auto">
@@ -345,16 +346,16 @@ const DetailProduct = (props: Props) => {
 			/>
 		</>
 	);
-}
+};
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  const { product_id } = ctx.query
+	const { product_id } = ctx.query;
 
-  return {
-    props: {
-      productId: product_id
-    },
-  }
+	return {
+		props: {
+			productId: product_id,
+		},
+	};
 }
 
 export default DetailProduct;

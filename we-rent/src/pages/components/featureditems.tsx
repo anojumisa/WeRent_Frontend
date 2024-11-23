@@ -45,9 +45,9 @@ export default function ProductPage() {
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold text-white">Our Daily Digest</h2>
-      <div className="flex gap-8 overflow-x-auto text-black mt-14">
+    <div className="p-7 max-w-screen-2xl mx-auto">
+      <h2 className="text-2xl font-bold text-black">Our Daily Digest</h2>
+      <div className="flex gap-8 overflow-x-auto text-black mt-10">
         {products.map((item) => (
           <div
             key={item.id}
@@ -77,7 +77,7 @@ export default function ProductPage() {
                 }).format(item.average_rating)}</p>
               </div>
             </div>
-            <div className="absolute inset-0 bg-black bg-opacity-50 text-white flex items-center justify-center text-lg font-semibold opacity-0 hover:opacity-100 transition-opacity">
+            <div className="absolute inset-0 bg-black bg-opacity-50 text-black flex items-center justify-center text-lg font-semibold opacity-0 hover:opacity-100 transition-opacity">
               Check Details
             </div>
           </div>
