@@ -10,8 +10,14 @@ const SignUp: React.FC = () => {
 
   const validationSchema = yup.object().shape({
     name: yup.string().required("Name is required"),
-    email: yup.string().email("Invalid email format").required("Email is required"),
-    password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+    email: yup
+      .string()
+      .email("Invalid email format")
+      .required("Email is required"),
+    password: yup
+      .string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
     address: yup.string().required("Address is required"),
     phone: yup.string().required("Phone is required"),
   });
@@ -19,23 +25,26 @@ const SignUp: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      await validationSchema.validate({ name, email, password, address, phone }, { abortEarly: false });
+      await validationSchema.validate(
+        { name, email, password, address, phone },
+        { abortEarly: false }
+      );
 
       // Check if email is already in use
-      const response = await fetch("/api/check-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+      // const response = await fetch("/api/check-email", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ email }),
+      // });
 
-      const data = await response.json();
+      // const data = await response.json();
 
-      if (data.exists) {
-        alert("Email is already in use. Please use a different email.");
-        return;
-      }
+      // if (data.exists) {
+      //   alert("Email is already in use. Please use a different email.");
+      //   return;
+      // }
 
       // Handle form submission logic here
       console.log("Name:", name);
@@ -43,7 +52,9 @@ const SignUp: React.FC = () => {
       console.log("Password:", password);
       console.log("Address:", address);
       console.log("Phone:", phone);
-      alert("Thank you for signing up!");
+      alert(
+        `Thank you for signing up! 😊\nName: ${name}\nEmail: ${email}\nAddress: ${address}\nPhone: ${phone}`
+      );
 
       // Reset fields after alert
       setName("");
@@ -132,13 +143,12 @@ const SignUp: React.FC = () => {
               required
             />
           </div>
-            <button
+          <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-            >
+          >
             Sign Up
-            </button>
-
+          </button>
         </form>
         <p className="mt-4 text-center text-black">
           Already have an account?{" "}
